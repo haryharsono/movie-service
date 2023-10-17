@@ -1,0 +1,5 @@
+INSERT INTO MOVIE_TABLE (title, description, rating, image, created_at, updated_at)VALUES ('Pengabdi Setan 2 Comunion', 'dalam sebuah film horor indonesia  tahun 2022 yang disutradarai dan ditulis oleh joko Anwar sebagai sekuel dari film 2017, pengabdi setan.', 7.0, '', '2023-10-17 12:00:00', '2023-10-17 12:00:00');
+INSERT INTO MOVIE_TABLE (title, description, rating, image, created_at, updated_at)VALUES ('Pengabdi Setan', 'no setan', 7.5, 'movie.jpg', '2023-10-17 12:00:00', '2023-10-17 12:00:00');
+INSERT INTO MOVIE_TABLE (title, description, rating, image, created_at, updated_at)VALUES ('Toy Story', 'child movie', 8.9, 'movie_image.jpg', '2023-10-17 12:00:00', '2023-10-17 12:00:00');
+INSERT INTO MOVIE_TABLE (title, description, rating, image, created_at, updated_at)VALUES ('Super man', 'movie', 7.5, 'movie_image.jpg', '2023-10-17 12:00:00', '2023-10-17 12:00:00');
+INSERT INTO MOVIE_TABLE (title, description, rating, image, created_at, updated_at)VALUES ('Batman', 'challenge', 7.5, 'movie_image.jpg', '2023-10-17 12:00:00', '2023-10-17 12:00:00');
