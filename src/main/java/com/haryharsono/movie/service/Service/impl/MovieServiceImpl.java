@@ -19,18 +19,18 @@ import java.util.List;
 @Slf4j
 public class MovieServiceImpl implements MovieService {
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     private final MovieRepository movieRepository;
 
-    @Autowired
-    ValidationUtil validationUtil;
+    private final ValidationUtil validationUtil;
 
 
     @Autowired
-    public MovieServiceImpl(MovieRepository movieRepository) {
+    public MovieServiceImpl(ObjectMapper objectMapper, MovieRepository movieRepository, ValidationUtil validationUtil) {
+        this.objectMapper = objectMapper;
         this.movieRepository = movieRepository;
+        this.validationUtil = validationUtil;
     }
 
     @Override
