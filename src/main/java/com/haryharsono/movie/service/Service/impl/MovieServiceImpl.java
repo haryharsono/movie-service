@@ -9,6 +9,7 @@ import com.haryharsono.movie.service.entity.Movie;
 import com.haryharsono.movie.service.exceptionHandler.NotFoundException;
 import com.haryharsono.movie.service.repository.MovieRepository;
 import com.haryharsono.movie.service.validation.ValidationUtil;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    @Transactional
     public void updatedsmovie(Long id,CreateMovieRq req) {
             validationUtil.validate(req);
             Movie movie = movieRepository.findById(id).orElseThrow(()->new NotFoundException("Id Not Found"));
