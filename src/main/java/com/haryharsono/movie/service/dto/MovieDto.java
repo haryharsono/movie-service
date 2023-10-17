@@ -1,4 +1,4 @@
-package com.haryharsono.movie.service.dto.movie;
+package com.haryharsono.movie.service.dto;
 
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;

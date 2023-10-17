@@ -1,21 +1,32 @@
 package com.haryharsono.movie.service.Service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.haryharsono.movie.service.Service.MovieService;
-import com.haryharsono.movie.service.dto.movie.MovieDetailsRs;
-import com.haryharsono.movie.service.dto.movie.MovieDto;
-import com.haryharsono.movie.service.dto.movie.movieDetailsRq;
+import com.haryharsono.movie.service.dto.MovieDetailsRs;
+import com.haryharsono.movie.service.dto.MovieDto;
+import com.haryharsono.movie.service.dto.CreateMovieRq;
 import com.haryharsono.movie.service.entity.Movie;
+import com.haryharsono.movie.service.exceptionHandler.NotFoundException;
 import com.haryharsono.movie.service.repository.MovieRepository;
+import com.haryharsono.movie.service.validation.ValidationUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class MovieServiceImpl implements MovieService {
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     private final MovieRepository movieRepository;
+
+    @Autowired
+    ValidationUtil validationUtil;
+
 
     @Autowired
     public MovieServiceImpl(MovieRepository movieRepository) {
@@ -24,38 +35,37 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<MovieDto> listOfMovie() {
-        return movieRepository.findAll().stream().map(this::mapperToMovieDto).toList().stream().toList();
+        return movieRepository.findAll().stream().map(x -> (objectMapper.convertValue(x, MovieDto.class))).toList().stream().toList();
     }
 
     @Override
-    public MovieDetailsRs detailsmovie(movieDetailsRq req) {
-        return null;
+    public MovieDetailsRs detailsmovie(Long req) {
+            Movie movie = movieRepository.findById(req).orElseThrow(() -> new NotFoundException("Not FOund"));
+            return objectMapper.convertValue(movie, MovieDetailsRs.class);
     }
 
     @Override
-    public void createMovie(movieDetailsRq req) {
-
-    }
-
-    @Override
-    public void updatedsmovie(movieDetailsRq req) {
+    public void createMovie(CreateMovieRq movie) {
+        validationUtil.validate(movie);
+        movieRepository.saveAndFlush(objectMapper.convertValue(movie,Movie.class));
 
     }
 
     @Override
-    public void deletedsmovie(movieDetailsRq req) {
-
+    public void updatedsmovie(Long id,CreateMovieRq req) {
+            validationUtil.validate(req);
+            Movie movie = movieRepository.findById(id).orElseThrow(()->new NotFoundException("Id Not Found"));
+            movie.setTitle(req.getTitle());
+            movie.setDescription(req.getTitle());
+            movie.setRating(req.getRating());
+            movie.setCreatedAt(req.getCreatedAt());
+            movie.setImage(req.getImage());
+            movieRepository.saveAndFlush(movie);
     }
-    private MovieDto mapperToMovieDto(Movie movie){
-        return MovieDto
-                .builder()
-                .id(movie.getId())
-                .title(movie.getTitle())
-                .image(movie.getImage())
-                .description(movie.getDescription())
-                .rating(movie.getRating())
-                .createdAt(movie.getCreatedAt())
-                .updatedAt(movie.getUpdatedAt())
-                .build();
+
+    @Override
+    public void deletedsmovie(Long req) {
+            Movie movie = movieRepository.findById(req).orElseThrow(()->new NotFoundException("Id Not Found"));
+            movieRepository.delete(movie);
     }
 }
